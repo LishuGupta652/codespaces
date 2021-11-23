@@ -55,4 +55,10 @@ addBookForm.addEventListener("submit", (e) => {
 const deleteBookForm = document.querySelector(".delete");
 deleteBookForm.addEventListener("submit", (e) => {
   e.preventDefault();
+
+  const docRef = doc(db, "books", deleteBookForm.id.value);
+
+  deleteDoc(docRef).then(() => {
+    deleteDoc.reset();
+  });
 });
