@@ -1,5 +1,12 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc, getDocs } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  getDocs,
+  deleteDoc,
+  doc,
+} from "firebase/firestore";
 const firebaseConfig = {
   apiKey: "AIzaSyBxDZWqh6vDGewBZGkbO426eqbAhUhaHnA",
   authDomain: "codespace007.firebaseapp.com",
@@ -30,3 +37,22 @@ getDocs(colRef)
   .catch((err) => {
     console.log(err);
   });
+
+// Add a document
+const addBookForm = document.querySelector(".add");
+addBookForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  addDoc(colRef, {
+    title: addBookForm.title.value,
+    author: addBookForm.author.value,
+  }).then(() => {
+    addBookForm.reset();
+  });
+});
+
+// Delete a document
+const deleteBookForm = document.querySelector(".delete");
+deleteBookForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+});
