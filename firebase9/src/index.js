@@ -19,6 +19,14 @@ const db = getFirestore();
 const colRef = collection(db, "books");
 
 // get collection data
-getDocs(colRef).then((snapshot) => {
-    
-});
+getDocs(colRef)
+  .then((snapshot) => {
+    let books = [];
+    snapshot.docs.forEach((doc) => {
+      books.push({ ...doc.data(), id: doc.id });
+    });
+    console.log(books);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
