@@ -3,7 +3,7 @@ import {
   getFirestore,
   collection,
   addDoc,
-  getDocs,
+  onSnapshot,
   deleteDoc,
   doc,
 } from "firebase/firestore";
@@ -25,18 +25,14 @@ const db = getFirestore();
 // collection ref
 const colRef = collection(db, "books");
 
-// get collection data
-getDocs(colRef)
-  .then((snapshot) => {
-    let books = [];
-    snapshot.docs.forEach((doc) => {
-      books.push({ ...doc.data(), id: doc.id });
-    });
-    console.log(books);
-  })
-  .catch((err) => {
-    console.log(err);
+// get real time  data
+onSnapshot(colRef, (snapshot) => {
+  let books = [];
+  snapshot.docs.forEach((doc) => {
+    books.push({ ...doc.data(), id: doc.id });
   });
+  console.log(books);
+});
 
 // Add a document
 const addBookForm = document.querySelector(".add");
@@ -59,6 +55,6 @@ deleteBookForm.addEventListener("submit", (e) => {
   const docRef = doc(db, "books", deleteBookForm.id.value);
 
   deleteDoc(docRef).then(() => {
-    deleteDoc.reset();
+    deleteBookForm.reset();
   });
 });
