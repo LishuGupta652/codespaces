@@ -6,6 +6,10 @@ import {
   onSnapshot,
   deleteDoc,
   doc,
+  query,
+  where,
+  orderBy,
+  updateDoc,
 } from "firebase/firestore";
 const firebaseConfig = {
   apiKey: "AIzaSyBxDZWqh6vDGewBZGkbO426eqbAhUhaHnA",
@@ -25,8 +29,15 @@ const db = getFirestore();
 // collection ref
 const colRef = collection(db, "books");
 
+// queries
+const q = query(
+  colRef,
+  where("author", "==", "lishu"),
+  orderBy("title", "desc")
+);
+
 // get real time  data
-onSnapshot(colRef, (snapshot) => {
+onSnapshot(q, (snapshot) => {
   let books = [];
   snapshot.docs.forEach((doc) => {
     books.push({ ...doc.data(), id: doc.id });
@@ -56,5 +67,24 @@ deleteBookForm.addEventListener("submit", (e) => {
 
   deleteDoc(docRef).then(() => {
     deleteBookForm.reset();
+  });
+});
+
+// Get a signle document
+// const docRef=  doc(db, "books", "")
+
+// updating doc
+const updateForm = document.querySelector(".update");
+updateForm.addEventListener("submit", () => {
+  e.preventDefault();
+
+  const docRef = doc(db, "books", deleteBookForm.id.value);
+
+  updateDoc(docRef, {
+    title: addBookForm.title.value || "updated title",
+    author: addBookForm.author.value || "updated author",
+  }).then(() => {
+    updateForm.reset();
+    addBookForm.reset();
   });
 });
