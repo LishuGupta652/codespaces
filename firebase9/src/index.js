@@ -41,13 +41,13 @@ const q = query(
 );
 
 // get real time  data
-onSnapshot(q, (snapshot) => {
-  let books = [];
-  snapshot.docs.forEach((doc) => {
-    books.push({ ...doc.data(), id: doc.id });
-  });
-  console.log(books);
-});
+// onSnapshot(q, (snapshot) => {
+//   let books = [];
+//   snapshot.docs.forEach((doc) => {
+//     books.push({ ...doc.data(), id: doc.id });
+//   });
+//   console.log(books);
+// });
 
 // Add a document
 const addBookForm = document.querySelector(".add");
@@ -78,26 +78,26 @@ deleteBookForm.addEventListener("submit", (e) => {
 // const docRef=  doc(db, "books", "")
 
 // updating doc
-const updateForm = document.querySelector(".update");
-updateForm.addEventListener("submit", () => {
-  e.preventDefault();
+// const updateForm = document.querySelector(".update");
+// updateForm.addEventListener("submit", () => {
+//   e.preventDefault();
 
-  const docRef = doc(db, "books", deleteBookForm.id.value);
+//   const docRef = doc(db, "books", deleteBookForm.id.value);
 
-  updateDoc(docRef, {
-    title: addBookForm.title.value || "updated title",
-    author: addBookForm.author.value || "updated author",
-  }).then(() => {
-    updateForm.reset();
-    addBookForm.reset();
-  });
-});
+//   updateDoc(docRef, {
+//     title: addBookForm.title.value || "updated title",
+//     author: addBookForm.author.value || "updated author",
+//   }).then(() => {
+//     updateForm.reset();
+//     addBookForm.reset();
+//   });
+// });
 
 // signup the user
 const signupForm = document.querySelector(".signup");
-signupForm.addEventListener((e) => {
+signupForm.addEventListener("submit", (e) => {
   e.preventDefault();
-
+  console.log("in signup menu");
   const email = signupForm.email.value;
   const password = signupForm.password.value;
   createUserWithEmailAndPassword(auth, email, password)
@@ -106,6 +106,8 @@ signupForm.addEventListener((e) => {
       signupForm.reset();
     })
     .catch((err) => {
-      console.log(err);
+      console.log(err.message);
     });
 });
+
+// login
